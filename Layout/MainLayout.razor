@@ -1,0 +1,50 @@
+﻿@* @inherits LayoutComponentBase
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div> *@
+
+@inherits LayoutComponentBase
+@using TodoApplikasjonenDelTo.Pages
+
+<div class="main">
+    <nav>
+        <button @onclick="ShowTodos">Todo List</button>
+        <button @onclick="ShowCompleted">Completed Todos</button>
+    </nav>
+
+    @if (showTodos)
+    {
+        <DynamicComponent Type="typeof(TodoComponent)" />
+    }
+    else
+    {
+        <DynamicComponent Type="typeof(CompletedComponent)" />
+    }
+</div>
+
+@code {
+    private bool showTodos = true;
+
+    private void ShowTodos()
+    {
+        showTodos = true;
+    }
+
+    private void ShowCompleted()
+    {
+        showTodos = false;
+    }
+}
+

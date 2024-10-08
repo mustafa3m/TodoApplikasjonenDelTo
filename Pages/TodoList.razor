@@ -1,0 +1,39 @@
+﻿@page "/todo"
+@inject TodoService TodoService
+@using TodoApplikasjonenDelTo.Pages
+
+<h3>Todo Application</h3>
+
+<button @onclick="ShowTodos">Show Todos</button>
+<button @onclick="ShowCompleted">Show Completed</button>
+
+<DynamicComponent Type="currentComponent" Parameters="componentParameters" />
+
+@code {
+    private Type currentComponent;
+    private Dictionary<string, object> componentParameters;
+
+    protected override void OnInitialized()
+    {
+        ShowTodos();
+    }
+
+    private void ShowTodos()
+    {
+        currentComponent = typeof(TodoComponent);
+        componentParameters = new Dictionary<string, object>
+        {
+            { "TodoService", TodoService } // Ensure the key matches the property name in TodoComponent
+        };
+    }
+
+    private void ShowCompleted()
+    {
+        currentComponent = typeof(CompletedComponent);
+        componentParameters = new Dictionary<string, object>
+        {
+            { "CompletedTodos", TodoService.GetCompletedTodos().ToList() }, // The key must match the property name in CompletedComponent
+            { "TodoService", TodoService }
+        };
+    }
+}

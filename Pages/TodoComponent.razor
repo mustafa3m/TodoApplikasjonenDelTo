@@ -1,0 +1,45 @@
+﻿@page "/todos"
+@using TodoApplikasjonenDelTo
+@inject TodoService TodoService
+
+
+<h3>Todo List</h3>
+<input @bind="newTodoTitle" placeholder="Enter new todo..." />
+<button @onclick="AddTodo">Add Todo</button>
+
+<ul>
+    @foreach (var todo in TodoService.Todos)
+    {
+        <li>
+            <input type="checkbox" @onclick="() => CompleteTodo(todo)" /> @todo.Title
+            <button @onclick="() => DeleteTodo(todo)">Delete</button>
+        </li>
+    }
+</ul>
+
+@code {
+   
+
+    private string newTodoTitle = string.Empty;
+
+    private void AddTodo()
+    {
+        if (!string.IsNullOrWhiteSpace(newTodoTitle))
+        {
+            TodoService.AddTodo(newTodoTitle);
+            newTodoTitle = string.Empty;
+            Console.WriteLine($"Todo '{newTodoTitle}' has been added."); // Message for adding
+        }
+    }
+
+    private void CompleteTodo(TodoItem todo)
+    {
+        TodoService.MarkAsComplete(todo);
+        Console.WriteLine($"Todo '{todo.Title}' has been completed."); // Message for completing
+    }
+
+    private void DeleteTodo(TodoItem todo)
+    {
+        TodoService.RemoveTodoItem(todo);
+    }
+}

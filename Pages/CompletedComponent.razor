@@ -1,0 +1,24 @@
+﻿@page "/completed"
+@inject TodoService TodoService
+
+<h3>Completed Todos</h3>
+
+<ul>
+    @foreach (var todo in CompletedTodos)
+    {
+        <li>
+            @todo.Title
+            <button @onclick="() => UndoComplete(todo)">Undo</button>
+        </li>
+    }
+</ul>
+
+@code {
+    public List<TodoItem> CompletedTodos => TodoService.GetCompletedTodos();
+
+    private void UndoComplete(TodoItem todo)
+    {
+        todo.IsCompleted = false; //  Or a method in the service to handle this
+    }
+}
+
